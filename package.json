@@ -1,0 +1,24 @@
+{
+  "name": "brazil-currency-converter",
+  "version": "1.0.0",
+  "description": "USD to BRL currency quotes API with frontend (quotes, average, slippage).",
+  "main": "src/app.js",
+  "type": "module",
+  "scripts": {
+    "start": "node src/app.js",
+    "dev": "nodemon src/app.js"
+  },
+  "dependencies": {
+    "axios": "^1.13.1",
+    "cheerio": "^1.1.2",
+    "express": "^4.21.2",
+    "node-cache": "^5.1.2"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.22"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "license": "MIT"
+}

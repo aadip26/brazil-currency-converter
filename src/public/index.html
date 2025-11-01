@@ -1,0 +1,56 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Brazil Currency Converter (USD → BRL)</title>
+  <style>
+    body { font-family: Arial, sans-serif; max-width: 800px; margin: 32px auto; padding: 0 16px; }
+    .card { border: 1px solid #ddd; padding: 16px; border-radius: 8px; margin-bottom: 12px; }
+    h1 { margin-bottom: 8px; }
+    pre { background: #f7f7f7; padding: 12px; border-radius: 6px; overflow:auto;}
+    button { padding: 8px 12px; cursor:pointer; }
+  </style>
+</head>
+<body>
+  <h1>Brazil Currency Converter — USD → BRL</h1>
+  <p>Simple frontend to call the backend endpoints.</p>
+
+  <div class="card">
+    <button id="refresh">Refresh Quotes</button>
+    <div id="lastUpdated" style="margin-top:8px; font-size:13px; color:#666"></div>
+  </div>
+
+  <div id="quotes" class="card"><strong>Quotes</strong><div id="qdata"></div></div>
+  <div id="average" class="card"><strong>Average</strong><div id="adata"></div></div>
+  <div id="slippage" class="card"><strong>Slippage</strong><div id="sdata"></div></div>
+
+  <script>
+    const qEl = document.getElementById('qdata');
+    const aEl = document.getElementById('adata');
+    const sEl = document.getElementById('sdata');
+    const lu = document.getElementById('lastUpdated');
+
+    async function fetchAll() {
+      try {
+        lu.textContent = 'Loading...';
+        const [q, a, s] = await Promise.all([
+          fetch('/api/quotes').then(r => r.json()),
+          fetch('/api/average').then(r => r.json()),
+          fetch('/api/slippage').then(r => r.json()),
+        ]);
+        qEl.innerHTML = '<pre>' + JSON.stringify(q, null, 2) + '</pre>';
+        aEl.innerHTML = '<pre>' + JSON.stringify(a, null, 2) + '</pre>';
+        sEl.innerHTML = '<pre>' + JSON.stringify(s, null, 2) + '</pre>';
+        lu.textContent = 'Last fetched: ' + new Date().toLocaleString();
+      } catch (err) {
+        lu.textContent = 'Error fetching data';
+        console.error(err);
+      }
+    }
+
+    document.getElementById('refresh').addEventListener('click', fetchAll);
+    fetchAll();
+  </script>
+</body>
+</html>
